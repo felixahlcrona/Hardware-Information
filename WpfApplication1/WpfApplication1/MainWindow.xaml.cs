@@ -50,7 +50,36 @@ namespace WpfApplication1
             ManagementClass mgt = new ManagementClass("Win32_Processor");
             ManagementObjectCollection procs = mgt.GetInstances();
             foreach (ManagementObject item in procs)
-                return item.Properties["CurrentClockSpeed"].Value.ToString();
+                return item.Properties["MaxClockSpeed"].Value.ToString();
+
+
+            return "Unknown";
+        }
+
+
+        private static string GetCPUSocket()
+        {
+
+            ManagementClass mgt = new ManagementClass("Win32_Processor");
+            ManagementObjectCollection procs = mgt.GetInstances();
+            foreach (ManagementObject item in procs)
+                return item.Properties["SocketDesignation"].Value.ToString();
+
+
+            return "Unknown";
+        }
+
+
+
+
+        private static string GetCPUTotalCores()
+        {
+
+            ManagementClass mgt = new ManagementClass("Win32_Processor");
+            ManagementObjectCollection procs = mgt.GetInstances();
+            foreach (ManagementObject item in procs)
+                return item.Properties["NumberOfLogicalProcessors"].Value.ToString();
+
 
             return "Unknown";
         }
@@ -66,22 +95,7 @@ namespace WpfApplication1
             return "Unknown";
         }
      
-              private static void GetTemp(string s)
-        {
-            ManagementObjectSearcher searcher =
-    new ManagementObjectSearcher("root\\WMI",
-                                 "SELECT * FROM MSAcpi_ThermalZoneTemperature");
-
-            ManagementObjectCollection.ManagementObjectEnumerator enumerator =
-                searcher.Get().GetEnumerator();
-
-            while (enumerator.MoveNext())
-            {
-                ManagementBaseObject tempObject = enumerator.Current;
-                Console.WriteLine(tempObject["CurrentTemperature"].ToString());
-
-            }
-        }
+           
     
 
 
@@ -115,7 +129,22 @@ namespace WpfApplication1
             this.Title = textBox.Text = (GetCPUClockSpeed());
         }
 
-        
+        private void TextBox_TextChanged_4(object sender, TextChangedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+
+            this.Title = textBox.Text = (GetCPUSocket());
+        }
+
+
+
+        private void TextBox_TextChanged_3(object sender, TextChangedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+
+            this.Title = textBox.Text = (GetCPUTotalCores());
+        }
+
 
      
 
